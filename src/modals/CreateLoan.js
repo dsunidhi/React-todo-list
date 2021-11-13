@@ -1,7 +1,7 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
-const EditTaskPopup = ({modal, toggle, updateTask, taskObj}) => {
+const CreateLoanPopup = ({modal, toggle, save}) => {
     const [loanID, setLoanID] = useState();
     const [loanName, setLoanName] = useState('');
     const [userList, setUserList] = useState('');
@@ -9,6 +9,7 @@ const EditTaskPopup = ({modal, toggle, updateTask, taskObj}) => {
     const [creditScore, setCreditScore] = useState();
     const [location, setLocation] = useState();
     const [description, setDescription] = useState('')
+
     const handleChange = (e) => {
         
         const {name, value} = e.target
@@ -34,34 +35,29 @@ const EditTaskPopup = ({modal, toggle, updateTask, taskObj}) => {
         if(name === "description"){
             setDescription(value)
         }
-
+        
 
     }
 
-    useEffect(() => {
+    const handleSave = (e) => {
+        e.preventDefault()
+        let taskObj = {}
+        taskObj["ID"] = loanID
+        taskObj["Name"] = loanName
+        taskObj["Users"] = userList
+        taskObj["TotalAmount"] = totalAmount
+        taskObj["CreditScore"] = creditScore
+        taskObj["Location"] = location
+        taskObj["Description"] = description
+        save(taskObj)
 
-        setLoanID(taskObj.ID)
-        setLoanName(taskObj.Name)
-        setUserList(taskObj.UserList)
-        setTotalAmount(taskObj.TotalAmount)
-        setCreditScore(taskObj.CreditScore)
-        setLocation(taskObj.Location)
-        setDescription(taskObj.Description)
-    },[])
-
-    const handleUpdate = (e) => {
-        e.preventDefault();
-        let tempObj = {}
-        tempObj['Name'] = taskName
-        tempObj['Description'] = description
-        updateTask(tempObj)
     }
 
     return (
         <Modal isOpen={modal} toggle={toggle}>
-            <ModalHeader toggle={toggle}>Update Task</ModalHeader>
+            <ModalHeader toggle={toggle}>Create Group Loan</ModalHeader>
             <ModalBody>
-            <div className = "form-group">
+                    <div className = "form-group">
                         <label>Loan ID</label>
                         <input type="text" className = "form-control" value = {loanID} onChange = {handleChange} name = "loanID"/>
                     </div>
@@ -92,11 +88,11 @@ const EditTaskPopup = ({modal, toggle, updateTask, taskObj}) => {
                 
             </ModalBody>
             <ModalFooter>
-            <Button color="primary" onClick={handleUpdate}>Update</Button>{' '}
+            <Button color="primary" onClick={handleSave}>Create</Button>{' '}
             <Button color="secondary" onClick={toggle}>Cancel</Button>
             </ModalFooter>
       </Modal>
     );
 };
 
-export default EditTaskPopup;
+export default CreateLoanPopup;
